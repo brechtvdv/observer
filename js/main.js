@@ -1,48 +1,47 @@
-var color =  "green-light";
-var counter = 3;
-var marker_test;
+var markers = null;
+var test_positions = [[51.219115, 4.420655], [51.218839, 4.421601]];
 
 $(function(){
   var map = L.map('map',{
     scrollWheelZoom : false
-  }).setView([51.219008, 4.421053], 19);
+  }).setView([51.219008, 4.421053], 17);
 
   //Add tile layer from Mapbox
   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    maxZoom: 18,
+    maxZoom: 17,
     id: 'mapbox.streets',
     accessToken: 'pk.eyJ1IjoibGFtYXNhdXJ1cyIsImEiOiJjamV5ZTYyZjUxNWYzMndwdWQ0YTBrZWJhIn0.c7Mb44YmSAV6R-c2BeuOiA'
   }).addTo(map);
 
-  var icon_test = L.divIcon({
-      className: 'traffic-light green-light',
-      html: '<p>3</p>'
-  });
+  var source1 = new EventSource('https://localhost:3000?uri=' + 'http://data.observer.be/verkeerslichten/1');
+  source1.onmessage = function(message) {
+    data = JSON.parse(message.data)
 
-  marker_test = L.marker([51.219008, 4.421053], {
-    icon: icon_test
-  }).addTo(map);
+    if(!markers){
 
-  setInterval(function(){
-
-    counter--;
-
-    if(counter < 1){
-      counter = 3
-      if(marker_test._icon.classList.contains("green-light")){
-        marker_test._icon.classList.remove("green-light");
-        marker_test._icon.classList.add("orange-light");
-      } else if(marker_test._icon.classList.contains("orange-light")){
-        marker_test._icon.classList.remove("orange-light");
-        marker_test._icon.classList.add("red-light");
-      } else if(marker_test._icon.classList.contains("red-light")){
-        marker_test._icon.classList.remove("red-light");
-        marker_test._icon.classList.add("green-light");
+      //Initiate a marker for every traffic light
+      markers = [];
+      for( var light of data["@graph"] ){
+        new_marker = new TrafficLightMarker(light["@id"], light.count, test_positions.pop(), light.color);
+        markers.push(new_marker);
+        new_marker.add_to_map(map);
       }
+
+    } else {
+
+      //Update every traffic light
+      for( var light of data["@graph"] ){
+        for( var marker of markers ){
+          if( marker.id == light["@id"] ){
+
+            marker.color = light.color;
+            marker.count = light.count;
+
+          }
+        }
+      }
+
     }
-
-    marker_test._icon.innerHTML = '<p>' + counter + '</p>';
-
-  }, 1000)
+  };
 });

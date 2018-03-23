@@ -1,0 +1,12 @@
+.traffic-light{
+    border-radius: 50%;
+    /*padding: 4px;*/
+    /*border: solid 3px;*/
+    margin: -25%;
+}
+
+.traffic-light p{
+    padding: 0;
+    margin: 0;
+    text-align: center;
+}
