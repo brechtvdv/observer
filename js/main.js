@@ -1,4 +1,4 @@
-var markers = null;
+var markers = [];
 var test_positions = [[51.219115, 4.420655], [51.218839, 4.421601]];
 
 $(function(){
@@ -14,7 +14,23 @@ $(function(){
     accessToken: 'pk.eyJ1IjoibGFtYXNhdXJ1cyIsImEiOiJjamV5ZTYyZjUxNWYzMndwdWQ0YTBrZWJhIn0.c7Mb44YmSAV6R-c2BeuOiA'
   }).addTo(map);
 
-  var source1 = new EventSource('https://localhost:3000?uri=' + 'http://data.observer.be/verkeerslichten/1');
+  var xmlHttp = new XMLHttpRequest();
+
+  xmlHttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var catalog = JSON.parse(this.responseText);
+      for (var sensor of catalog["@graph"]){
+        var new_marker = new TrafficLightMarker(sensor["@id"], [sensor.latitude, sensor.longitude]);
+        markers.push(new_marker);
+        new_marker.add_to_map(map);
+      }
+    }
+  };
+
+  xmlHttp.open( "GET", 'https://localhost:3000', false ); // false for synchronous request
+  xmlHttp.send( null );
+
+  /*var source1 = new EventSource('https://localhost:3000?uri=' + 'http://data.observer.be/verkeerslichten/1');
   source1.onmessage = function(message) {
     data = JSON.parse(message.data)
 
@@ -43,5 +59,5 @@ $(function(){
       }
 
     }
-  };
+  };*/
 });
