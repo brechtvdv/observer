@@ -7,6 +7,34 @@ layout: default
       <div class="row" id="how-it-works-container">
         <div class="container" id="what">
             <h2>Specification</h2>
+            <h3>Publishing real-time data</h3>
+            	The status plan of a crossing can change every X subseconds. To enable clients to retrieve these updates as fast as possible while keeping the server cost low, a publishing mechanism is proposed by relying on standards HTTP/2 and SSE.
+	            <h4>Server-Sent Events (SSE)</h4><p>
+	            	SSE is a very simple method for publishers to push events over HTTP to clients:
+	            	<ul>
+	            		<li>A client sends a request to a server through the EventSource interface that contains the SSE API.</li>
+	            		<li>The server keeps the connection open, sets the mime-type to text/event-stream and streams events back.</li>
+	            		<li>That's it. Both the server as the client can choose to close the stream.</li>
+	            	</ul>
+	            <h4>HTTP/2</h4>
+	            		<p>This new version of HTTP has the advantage to combine streams over the same connection, which is called multiplexing. This means that a client can dynamically subscribe to multiple streams (read: traffic lights) without opening/closing a TCP connection every time.</p>
+	            		<p>This also takes away the disadvantage of SSE over HTTP/1.1 where the browser has a limited amount of connections to the same domain.</p>
+
+            <h3>Publishing historic data</h3>
+           		<h4>Timeseries server</h4>
+            	<h4>Linked Data Fragments</h4>
+
+            <h3>Data models</h3>
+            <h4>MAP</h4>
+            <h4>SPAT</h4>
+            <h4>Linked Data Application Profile</h4>
+            <h4>SPAT/MAP2LD converter</h4>
+
+            <h3>Intelligent user agent</h3>
+        		<h4>Using historic data for prediction</h4>
+
+        		<h4>Using real-time data for countdown</h4>
+
         </div>
       </div>
     </div>
