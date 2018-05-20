@@ -4,7 +4,9 @@
   "description": "A site showing of the capabilities of open traffic lights.",
   "main": "index.js",
   "dependencies": {
-    "n3": "latest",
+    "ldfetch": "^1.0.6-alpha",
+    "moment": "^2.22.1",
+    "n3": "^1.0.0-beta.1",
     "node-fetch": "^2.1.2",
     "wellknown": "^0.5.0"
   },

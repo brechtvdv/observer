@@ -1,16 +1,24 @@
 var fetch = require('node-fetch'),
   N3 = require('n3'),
-  wktParser = require('wellknown');
+  wktParser = require('wellknown'),
+  jsonld = require('jsonld'),
+  moment = require('moment');
 
 const EX = 'http://example.org#';
 const RDFS = 'http://www.w3.org/2000/01/rdf-schema#';
 const GIS = 'http://www.opengis.net/#';
+const PROV = 'http://www.w3.org/ns/prov#';
 
 const predicates = {
   departureLane: N3.DataFactory.namedNode(EX + 'departureLane'),
   arrivalLane: N3.DataFactory.namedNode(EX + 'arrivalLane'),
   wktLiteral: N3.DataFactory.namedNode(GIS + 'geosparql/wktLiteral'),
-  width: N3.DataFactory.namedNode(EX + 'width')
+  width: N3.DataFactory.namedNode(EX + 'width'),
+  signalGroup: N3.DataFactory.namedNode(EX + 'signalGroup'),
+  eventState: N3.DataFactory.namedNode(EX + 'eventstate'),
+  minEndTime: N3.DataFactory.namedNode(EX + 'minendtime'),
+  label: N3.DataFactory.namedNode(RDFS + 'label'),
+  generatedAt: N3.DataFactory.namedNode(PROV + 'generatedAtTime')
 };
 const literals = {
   // yo: N3.DataFactory.literal('Yo', 'en'),
@@ -73,7 +81,54 @@ function calcLanePolygon(_wktLiteral, _width) {
   }
 }
 
-var mapdataUrl = 'https://raw.githubusercontent.com/brechtvdv/map2lrc/master/example.ttl?token=AF5zkPu7sqecc5zPoO5gnmv6Qzou1IP1ks5a_AklwA%3D%3D';
+function retrieveQuadsFromJsonld(_jsonld) {
+    return new Promise ((resolve, reject) => {
+        jsonld.toRDF(_jsonld, {format: 'application/n-quads'}, (err, nquads) => {
+            // nquads is a string of N-Quads
+            resolve(nquads);
+        });
+    })
+}
+
+async function getQuads(_doc) {
+    if (_doc) {
+        const quadsString = await retrieveQuadsFromJsonld(JSON.parse(_doc));
+        const parser = new N3.Parser();
+        const quads = parser.parse(quadsString);
+        return quads;
+    } else {
+        return [];
+    }
+}
+
+async function getSignalGroup(_host, _path, _signalGroup) {
+    console.log("Retrieving signalgroup data for signalgroup " + _signalGroup)
+    console.log(_host);
+    console.log(_path);
+    const jsonld = await window.fetch(_host + _path, {});
+    const doc = await jsonld.text();
+
+    const quads = await getQuads(doc)
+    const store = new N3.Store();
+    store.addQuads(quads);
+
+    const eventStateQuad = store.getQuads(N3.DataFactory.namedNode(_signalGroup), predicates.eventState, null);
+    const eventState = eventStateQuad[0].object.value;
+    const eventStateLabel = store.getQuads(eventState, predicates.label, null)[0].object.value;
+    const minEndTime = moment(store.getQuads(N3.DataFactory.namedNode(_signalGroup), predicates.minEndTime, null)[0].object.value);
+    const generatedAt = moment(store.getQuads(null, predicates.generatedAt, null)[0].object.value);
+
+    return await {
+        'eventStateLabel': eventStateLabel,
+        'minEndTime': minEndTime,
+        'generatedAt': generatedAt,
+        // 'countDown': (minEndTime.valueOf() - moment().valueOf())/1000
+        'countDown': (minEndTime.valueOf() - generatedAt.valueOf())/1000
+    }
+}
+
+// var mapdataUrl = 'https://raw.githubusercontent.com/brechtvdv/map2lrc/master/example.ttl?token=AF5zkGVi1tjiyM9cqq4riZw9P1vHr7Zeks5bBY2WwA%3D%3Ds';
+var mapdataUrl = 'https://localhost:3001';
 
 getQuadsFromUrl(mapdataUrl).then((quads) => {
   // console.log(quads);
@@ -89,6 +144,9 @@ getQuadsFromUrl(mapdataUrl).then((quads) => {
     const departureLaneQuad = store.getQuads(connection.subject, predicates.departureLane, null);
     const arrivalLaneQuad = store.getQuads(connection.subject, predicates.arrivalLane, null);
 
+    const signalGroupQuad = store.getQuads(connection.subject, predicates.signalGroup, null);
+    const signalGroupUrl = signalGroupQuad[0].object.value;
+
     // A connection should have exactly one departure and one arrival lane
     if (departureLaneQuad.length === 1 && arrivalLaneQuad.length === 1) {
       // Calculate and draw departure lane
@@ -98,7 +156,8 @@ getQuadsFromUrl(mapdataUrl).then((quads) => {
       let departureLanePolygon;
       if (departureWktLiteralQuad.length === 1 && departureWidthQuad.length === 1) {
         departureLanePolygon = calcLanePolygon(departureWktLiteralQuad[0].object.value, departureWidthQuad[0].object.value);
-        drawLaneOnMap(departureLanePolygon, 'yellow');
+        let polygon = L.polygon(departureLanePolygon, {color: "black", weight: 1, fill: true, fillOpacity: 1});
+        drawLaneOnMap(polygon);
       }
 
       // Calculate and draw arrival lane
@@ -108,12 +167,14 @@ getQuadsFromUrl(mapdataUrl).then((quads) => {
       let arrivalLanePolygon;
       if (arrivalWktLiteralQuad.length === 1 && arrivalWidthQuad.length === 1) {
         arrivalLanePolygon = calcLanePolygon(arrivalWktLiteralQuad[0].object.value, arrivalWidthQuad[0].object.value);
-        drawLaneOnMap(arrivalLanePolygon, 'red');
+        let polygon = L.polygon(arrivalLanePolygon, {color: "black", weight: 1, fill: true, fillOpacity: 1});
+        drawLaneOnMap(polygon);
       }
 
       // Draw connection with arrow between departure and arrival lane
       if (departureLanePolygon && arrivalLanePolygon) {
-        drawArrowOnMap(departureLanePolygon, arrivalLanePolygon);
+        let arrow = new TrafficLightMarker(signalGroupUrl, [departureLanePolygon[0], arrivalLanePolygon[0]]);
+        drawArrowOnMap(arrow.marker, arrow.markerHead);      
       }
     }
   })

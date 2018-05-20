@@ -8,17 +8,33 @@ layout: default
     <div id="page-container">
       <div class="row" id="how-it-works-container">
         <div class="container" id="what">
-          <h2>What is it?</h2>
+          <!-- <h2>What is it?</h2> -->
           <p>
-            Open traffic lights is a Proof-of-Concept for publishing traffic lights data as Open
-Data. This is done using Linked Data technologies and real-time publication of data. Also historical data is accessable for end-users. This page shows how to use the data with a demonstrator. If you want to read more how to publish real-time data, check out the specification page.
-
-This project is part of the City of Things programme .
+            This Proof-of-Concept demonstrates how your browser can process traffic light information. The intersection at the Tropic Institute of Antwerp is upgraded to a smart traffic light for the <a href="https://www.imec-int.com/nl/what-we-offer/innovation-services/city-of-things">City of Things</a> project. This data has been published as Linked Open Data enabling user agents to process this data more intelligent.
           </p>
 
-          <div id="map" style="height: 300px"></div>
-        
-        </div>
+          <div id="on_click_connection">
+          </div>
+
+
+          
+              <div id="map" style='margin-right: 5%; float: left; height: 300px; width: 50%; display: inline-block;'></div>
+              <div id="traffic_light" style='margin-left: 5%; height: 300px; width: 40%; display: inline-block;'></div>
+              <div id="on_update_connection" style='float: left; display: inline-block;'></div>
+
+
+          <h2 style="margin-top: 10px;">How does it work?</h2>
+          <p>Traffic light updates can change very frequently (every few seconds) and contains little information per update. As HTTP/1.1 requires the client to re-establish a TCP connection for every <span>GET</span> resource, new trade-offs need to be found. One way of solving this is by using publish-subscribe technologies. Another way is leveraging upcoming HTTP/2 technology where the same TCP connection can be used for retrieving multiple resources.
+
+            This project proposes 3 types of interfaces:
+            <ul>
+              <li>HTTP/2 documents where each document represents a resource and can be cached for multiple seconds enabling low-cost data publishing. <a href="https://localhost:3000/?uri=http://example.org/signalgroup/1">Try</a> it out.</li>
+              <li>Server-Sent Events interface creating a mechanism to subscribe for updates and pushing emergencies to the consumers</li>
+              <li>Historic data contains updates fragmented together in HTTP documents for every resource (on traffic light or intersection level)</li>
+            </ul>
+          </p>
+                  </div>
+
       </div>
     </div>
   </section>

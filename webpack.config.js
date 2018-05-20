@@ -1,10 +1,11 @@
 // webpack.config.js
 module.exports = {
   entry: {
-  	// main: './js/main.js'
+  	// traffic_light: './js/traffic_light.js',
   	map: './js/map.js'
   },
   output: {
-    filename: 'bundle.js'
+    // filename: 'bundle.js'
+    filename:'[name].js'
   }
 };
