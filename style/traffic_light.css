@@ -42,3 +42,7 @@
 .hljs-string {
 	color: #df5000;
 }
+
+.hljs-date {
+    color: #0086b3;
+}

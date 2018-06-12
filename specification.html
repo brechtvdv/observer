@@ -17,44 +17,152 @@ layout: default
             <ul>
               <li>Contains delta-based statuses on the intersection level. The moment one of the signalgroups of an intersection changes, all the previous statuses get archived.</li>
             </ul>
-            <p>Example: GET /intersection/1?page=2018-06-06T20:00:00 (Accept: application/trig)</p>
-            <pre><code class="javascript hljs">L.tileLayer(<span class="hljs-string">'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'</span>, {
-    attribution: <span class="hljs-string">'Map data &amp;copy; </span><span class="text-cut" data-cut="[…]"><span class="hljs-string">&lt;a href="https://www.openstreetmap.org/"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="https://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery © &lt;a href="https://www.mapbox.com/"&gt;Mapbox&lt;/a&gt;</span></span><span class="hljs-string">'</span>,
-    maxZoom: <span class="hljs-number">18</span>,
-    id: <span class="hljs-string">'mapbox.streets'</span>,
-    accessToken: <span class="hljs-string">'your.mapbox.access.token'</span>
-}).addTo(mymap);</code></pre>
+            <p>Example: GET /signalgroup/1&time=2018-06-06T20:00:01 (Accept: application/trig)</p>
+            <pre><code class="javascript hljs">{
+  @context: {
+    generatedAt: {
+      @id: <span class="hljs-string">"http://www.w3.org/ns/prov#generatedAtTime"</span>,
+      @type: <span class="hljs-string">"http://www.w3.org/2001/XMLSchema#date"</span>
+    },
+    ex: <span class="hljs-string">"http://example.org#"</span>,
+    EventState: <span class="hljs-string">"http://example.org/eventstate/"</span>,
+    eventState: {
+      @id: <span class="hljs-string">"ex:eventstate"</span>,
+      @type: <span class="hljs-string">"EventState"</span>
+    },
+    minEndTime: {
+      @id: <span class="hljs-string">"ex:minendtime"</span>,
+      @type: <span class="hljs-string">"http://www.w3.org/2001/XMLSchema#date"</span>
+    },
+    maxEndTime: {
+      @id: <span class="hljs-string">"ex:maxendtime"</span>,
+      @type: <span class="hljs-string">"http://www.w3.org/2001/XMLSchema#date"</span>
+    },
+    fragmentGroup: <span class="hljs-string">"ex:fragmentGroup"</span>,
+    rdfs: <span class="hljs-string">"http://www.w3.org/2000/01/rdf-schema#"</span>
+  },
+  @id: <span class="hljs-title">"http://example.org/intersection/1?time=2018-06-12T20:42:37.943Z"</span>,
+  generatedAt: <span class="hljs-date">"2018-06-12T20:42:37.943Z"</span>,
+  @graph: [
+    {
+      @graph: [
+      {
+        @id: <span class="hljs-string">"http://example.org/signalgroup/1"</span>,
+        @type: <span class="hljs-string">"ex:signalgroup"</span>,
+        eventState: {
+          @id: <span class="hljs-string">"http://example.org/eventstate/stop-And-Remain"</span>,
+          @type: <span class="hljs-string">"EventState"</span>,
+          rdfs:label: <span class="hljs-string">"stop-And-Remain"</span>
+        },
+        minEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>,
+        maxEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>
+      },
+      {
+        @id: <span class="hljs-string">"http://example.org/signalgroup/2"</span>,
+        @type: <span class="hljs-string">"ex:signalgroup"</span>,
+        eventState: {
+          @id: <span class="hljs-string">"http://example.org/eventstate/stop-And-Remain"</span>,
+          @type: <span class="hljs-string">"EventState"</span>,
+          rdfs:label: <span class="hljs-string">"stop-And-Remain"</span>
+        },
+        minEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>,
+        maxEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>
+      }
+    ],
+    "http://www.w3.org/ns/prov#generatedAtTime": "2018-06-06T20:00:01+02:00",
+      "rdf:type": {
+        "@id": "http://www.w3.org/ns/prov#Entity"
+      },
+    "@id": "https://lodi.ilabt.imec.be:3002/?uri=http://example.org/signalgroup/1&time=2018-06-06T20:00:01"
+    },
+    {
+      @graph: [
+        {
+          "@id": "https://lodi.ilabt.imec.be:3002/?uri=http://example.org/signalgroup/1&time=2018-06-06T20:00:01",
+          "cc:license": {
+              "@id": "URI-licentie-todo"
+          }
+        },
+        {
+          "@id": "https://lodi.ilabt.imec.be:3002/?uri=http://example.org/signalgroup/1&time=2018-06-06T20:00:01",
+          "hydra:previous": {
+              "@id": "https://lodi.ilabt.imec.be:3002/?uri=http://example.org/signalgroup/1&time=2018-06-06T19:00:01"
+          }
+        },
+      ]
+    }
+  ]
+} 
+            </code></pre>
 
           <h2>Real-time data with polling</h2>
             <ul>
               <li>Preference for HTTP/2 for multiplexing over the same connection.</li>
               <li>Contains latest state of the intersection with all its signalgroups listed.</li>
+              <li>Default content-type <span class="hljs-string">application/ld+json</span>, but also other formats supporting quads can be used, e.g. <span class="hljs-string">application/trig</span></li>
             </ul>
 
-            <p>Example: GET /intersections/1 (Accept: application/trig)</p>
-            <pre><code class="javascript hljs">L.tileLayer(<span class="hljs-string">'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'</span>, {
-    attribution: <span class="hljs-string">'Map data &amp;copy; </span><span class="text-cut" data-cut="[…]"><span class="hljs-string">&lt;a href="https://www.openstreetmap.org/"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="https://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery © &lt;a href="https://www.mapbox.com/"&gt;Mapbox&lt;/a&gt;</span></span><span class="hljs-string">'</span>,
-    maxZoom: <span class="hljs-number">18</span>,
-    id: <span class="hljs-string">'mapbox.streets'</span>,
-    accessToken: <span class="hljs-string">'your.mapbox.access.token'</span>
-}).addTo(mymap);</code></pre>
+            <p>Example: GET <a href="https://lodi.ilabt.imec.be:3002/?uri=http://example.org/signalgroup/1">/intersections/1</a> (Accept: application/ld+json)</p>
+            <pre><code class="javascript hljs">{
+    @context: {
+    generatedAt: {
+      @id: <span class="hljs-string">"http://www.w3.org/ns/prov#generatedAtTime"</span>,
+      @type: <span class="hljs-string">"http://www.w3.org/2001/XMLSchema#date"</span>
+    },
+    ex: <span class="hljs-string">"http://example.org#"</span>,
+    EventState: <span class="hljs-string">"http://example.org/eventstate/"</span>,
+    eventState: {
+      @id: <span class="hljs-string">"ex:eventstate"</span>,
+      @type: <span class="hljs-string">"EventState"</span>
+    },
+    minEndTime: {
+      @id: <span class="hljs-string">"ex:minendtime"</span>,
+      @type: <span class="hljs-string">"http://www.w3.org/2001/XMLSchema#date"</span>
+    },
+    maxEndTime: {
+      @id: <span class="hljs-string">"ex:maxendtime"</span>,
+      @type: <span class="hljs-string">"http://www.w3.org/2001/XMLSchema#date"</span>
+    },
+    fragmentGroup: <span class="hljs-string">"ex:fragmentGroup"</span>,
+    rdfs: <span class="hljs-string">"http://www.w3.org/2000/01/rdf-schema#"</span>
+  },
+  @id: <span class="hljs-title">"http://example.org/intersection/1?time=2018-06-12T20:42:37.943Z"</span>,
+  generatedAt: <span class="hljs-date">"2018-06-12T20:42:37.943Z"</span>,
+  @graph: [
+    {
+      @id: <span class="hljs-string">"http://example.org/signalgroup/1"</span>,
+      @type: <span class="hljs-string">"ex:signalgroup"</span>,
+      eventState: {
+        @id: <span class="hljs-string">"http://example.org/eventstate/stop-And-Remain"</span>,
+        @type: <span class="hljs-string">"EventState"</span>,
+        rdfs:label: <span class="hljs-string">"stop-And-Remain"</span>
+      },
+      minEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>,
+      maxEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>
+    },
+    {
+      @id: <span class="hljs-string">"http://example.org/signalgroup/2"</span>,
+      @type: <span class="hljs-string">"ex:signalgroup"</span>,
+      eventState: {
+        @id: <span class="hljs-string">"http://example.org/eventstate/stop-And-Remain"</span>,
+        @type: <span class="hljs-string">"EventState"</span>,
+        rdfs:label: <span class="hljs-string">"stop-And-Remain"</span>
+      },
+      minEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>,
+      maxEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>
+    }
+  ]
+} 
+            </code></pre>
 
           <h2>Real-time data with events</h2>
 
           <ul>
-              <li>Preference for Server-Sent Events (SSE)</li>
               <li>Pushes changes to the client</li>
+              <li>Preference for Server-Sent Events (SSE)</li>
+              <li>Send a request with Accept-header set to <span class="hljs-string">text/event-stream</span> in your HTTP requests</li>
+              <li>The response can look the same as the example with polling.</li>
             </ul>
-
-            <p>Example: GET /intersections/1 (Accept: text/event-stream)</p>
-            <pre><code class="javascript hljs">L.tileLayer(<span class="hljs-string">'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}'</span>, {
-    attribution: <span class="hljs-string">'Map data &amp;copy; </span><span class="text-cut" data-cut="[…]"><span class="hljs-string">&lt;a href="https://www.openstreetmap.org/"&gt;OpenStreetMap&lt;/a&gt; contributors, &lt;a href="https://creativecommons.org/licenses/by-sa/2.0/"&gt;CC-BY-SA&lt;/a&gt;, Imagery © &lt;a href="https://www.mapbox.com/"&gt;Mapbox&lt;/a&gt;</span></span><span class="hljs-string">'</span>,
-    maxZoom: <span class="hljs-number">18</span>,
-    id: <span class="hljs-string">'mapbox.streets'</span>,
-    accessToken: <span class="hljs-string">'your.mapbox.access.token'</span>
-}).addTo(mymap);</code></pre>
-
-
 
 
             <!-- <h3>Publishing real-time data</h3>
