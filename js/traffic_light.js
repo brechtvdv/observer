@@ -146,16 +146,26 @@ class TrafficLightMarker{
       // const info = '<h3 style="float: left">' + label_ + '</h3><h1 style="font-size: 100px;">' + counter_ + '</h1></div>';
       if (label_ === 'stop-Then-Proceed' || label_ === 'stop-And-Remain') {
         // Red
-        changeHtmlBodyById('traffic_light', '<img src="{{ site.baseurl }}/assets/images/red.jpg" height="40%" width="40%" style="float: left; margin-top: 50px;"/>' + info);
+        document.getElementById("red_light").style.display = "block";
+        document.getElementById("orange_light").style.display = "none";
+        document.getElementById("green_light").style.display = "none";
+        changeHtmlBodyById('light_info', info);
         this.marker.setStyle(this.redStyle);
       }
       else if (label_ === 'permissive-Movement-Allowed' || label_ === 'protected-Movement-Allowed') {
         // green
-        changeHtmlBodyById('traffic_light', '<img src="{{ site.baseurl }}/assets/images/green.jpg" height="40%" width="40%" style="float: left; margin-top: 50px;"/>' + info);
+        document.getElementById("red_light").style.display = "none";
+        document.getElementById("orange_light").style.display = "none";
+        document.getElementById("green_light").style.display = "block";
+        changeHtmlBodyById('light_info', info);
         this.marker.setStyle(this.greenStyle);
       }
-      else if (label_ === 'unavailable') {
-        changeHtmlBodyById('traffic_light', '<img src="{{ site.baseurl }}/assets/images/orange.jpg" height="40%" width="40%" style="float: left; margin-top: 50px;"/>' + info);
+      else {
+        // orange
+        changeHtmlBodyById('light_info', info);
+        document.getElementById("red_light").style.display = "none";
+        document.getElementById("orange_light").style.display = "block";
+        document.getElementById("green_light").style.display = "none";
         this.marker.setStyle(this.orangeStyle);
       }
     }
