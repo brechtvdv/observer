@@ -1,3 +1,9 @@
+#image-pyramid {
+    max-height: 250px;
+    width: "100%";
+    margin: 24px 0;
+}
+
 .traffic-light{
     border-radius: 50%;
     /*padding: 4px;*/
@@ -9,4 +15,30 @@
     padding: 0;
     margin: 0;
     text-align: center;
+}
+
+.hljs {
+	background: #f8f8f8;
+	color: #333333;
+	display: block;
+}
+
+.hljs-tag {
+	color: #333333;
+}
+
+.hljs-title {
+	color: #63a35c;
+}
+
+.hljs-attribute {
+	color: #795da3;
+}
+
+.hljs-value {
+	color: #df5000;
+}
+
+.hljs-string {
+	color: #df5000;
 }

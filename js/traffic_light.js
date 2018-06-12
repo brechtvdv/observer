@@ -1,4 +1,4 @@
-const data_source = '193.190.127.149';
+const data_source = 'lodi.ilabt.imec.be';
 
 class TrafficLightMarker{
     constructor(uri, position){
@@ -37,7 +37,7 @@ class TrafficLightMarker{
       ]});
 
       // this.host = "https://localhost:3000";
-      this.host = "https://" + data_source + ":3000";
+      this.host = "https://" + data_source + ":3002";
       this.path = "/?uri=" + this.uri;
       this.retrieveUrl = this.host + this.path;
 
@@ -62,7 +62,7 @@ class TrafficLightMarker{
       this.active = true;
       this.counter = 0;
 
-      this.source = new EventSource('https://' + data_source + ':3000/');
+      this.source = new EventSource('https://' + data_source + ':3002/');
 
       this.source.onerror = (error => { 
         // console.log("error");

@@ -4,7 +4,7 @@ var fetch = require('node-fetch'),
   jsonld = require('jsonld'),
   moment = require('moment');
 
-const data_source = '193.190.127.149';
+const data_source = 'lodi.ilabt.imec.be';
 
 const EX = 'http://example.org#';
 const RDFS = 'http://www.w3.org/2000/01/rdf-schema#';
@@ -130,7 +130,7 @@ async function getSignalGroup(_host, _path, _signalGroup) {
 }
 
 // var mapdataUrl = 'https://raw.githubusercontent.com/brechtvdv/map2lrc/master/example.ttl?token=AF5zkGVi1tjiyM9cqq4riZw9P1vHr7Zeks5bBY2WwA%3D%3Ds';
-var mapdataUrl = 'https://' + data_source + ':3001';
+var mapdataUrl = 'http://' + data_source + ':3001';
 
 getQuadsFromUrl(mapdataUrl).then((quads) => {
   // console.log(quads);
