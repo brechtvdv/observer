@@ -21,7 +21,7 @@
     "build": "webpack --progress -p",
     "watch": "webpack --progress --watch",
     "server": "sudo bundle exec jekyll serve --host=0.0.0.0",
-    "dev": "npm run watch | sudo bundle exec jekyll serve",
+    "dev": "npm run watch | sudo bundle exec jekyll serve --baseurl ''",
     "prod": "npm run watch | npm run server"
   },
   "repository": {
