@@ -11,7 +11,7 @@ layout: default
           Note: an intersection contains multiple signalgroups. A signalgroup can represent multiple connections between lanes.
 </p><p>
           This specification for publishing traffic light information on the Web is split into three parts to balance different server/client costs against freshness of the data. At the bottom of the figure is historical data. The data freshness is very low and thus cost efficient to publish. There are two different strategies for publishing the real-time data. The first strategy publishes one HTTP document for each intersection. The idea is that all traffic lights of the intersection update their status almost everytime at the same time and for multiple seconds. The SPAT standard specifies that the minimum time of a connection status can't become lower, unless with emergencies. That's why there's a second strategy for real-time data: publish/subscribe communication. This means that the server pushes events to the client which enables clients to get updates faster, but requires higher server effort.
-          <img src="/assets/images/observer_pyramid.svg" alt="pyramid" id="image-pyramid"></p>
+          <img src="{{ site.baseurl }}/assets/images/observer_pyramid.svg" alt="pyramid" id="image-pyramid"></p>
 
           <h2>Historic data</h2>
             <ul>
