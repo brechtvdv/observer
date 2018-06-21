@@ -17,82 +17,10 @@ layout: default
             <ul>
               <li>Contains delta-based statuses on the intersection level. The moment one of the signalgroups of an intersection changes, all the previous statuses get archived.</li>
             </ul>
-            <p>Example: GET /signalgroup/1&time=2018-06-06T20:00:01 (Accept: application/trig)</p>
-            <pre><code class="javascript hljs">{
-  @context: {
-    generatedAt: {
-      @id: <span class="hljs-string">"http://www.w3.org/ns/prov#generatedAtTime"</span>,
-      @type: <span class="hljs-string">"http://www.w3.org/2001/XMLSchema#date"</span>
-    },
-    ex: <span class="hljs-string">"http://example.org#"</span>,
-    EventState: <span class="hljs-string">"http://example.org/eventstate/"</span>,
-    eventState: {
-      @id: <span class="hljs-string">"ex:eventstate"</span>,
-      @type: <span class="hljs-string">"EventState"</span>
-    },
-    minEndTime: {
-      @id: <span class="hljs-string">"ex:minendtime"</span>,
-      @type: <span class="hljs-string">"http://www.w3.org/2001/XMLSchema#date"</span>
-    },
-    maxEndTime: {
-      @id: <span class="hljs-string">"ex:maxendtime"</span>,
-      @type: <span class="hljs-string">"http://www.w3.org/2001/XMLSchema#date"</span>
-    },
-    fragmentGroup: <span class="hljs-string">"ex:fragmentGroup"</span>,
-    rdfs: <span class="hljs-string">"http://www.w3.org/2000/01/rdf-schema#"</span>
-  },
-  @id: <span class="hljs-title">"http://example.org/intersection/1?time=2018-06-12T20:42:37.943Z"</span>,
-  generatedAt: <span class="hljs-date">"2018-06-12T20:42:37.943Z"</span>,
-  @graph: [
-    {
-      @graph: [
-      {
-        @id: <span class="hljs-string">"http://example.org/signalgroup/1"</span>,
-        @type: <span class="hljs-string">"ex:signalgroup"</span>,
-        eventState: {
-          @id: <span class="hljs-string">"http://example.org/eventstate/stop-And-Remain"</span>,
-          @type: <span class="hljs-string">"EventState"</span>,
-          rdfs:label: <span class="hljs-string">"stop-And-Remain"</span>
-        },
-        minEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>,
-        maxEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>
-      },
-      {
-        @id: <span class="hljs-string">"http://example.org/signalgroup/2"</span>,
-        @type: <span class="hljs-string">"ex:signalgroup"</span>,
-        eventState: {
-          @id: <span class="hljs-string">"http://example.org/eventstate/stop-And-Remain"</span>,
-          @type: <span class="hljs-string">"EventState"</span>,
-          rdfs:label: <span class="hljs-string">"stop-And-Remain"</span>
-        },
-        minEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>,
-        maxEndTime: <span class="hljs-date">"2018-06-12T20:43:04.743Z"</span>
-      }
-    ],
-    "http://www.w3.org/ns/prov#generatedAtTime": "2018-06-06T20:00:01+02:00",
-      "rdf:type": {
-        "@id": "http://www.w3.org/ns/prov#Entity"
-      },
-    "@id": "https://lodi.ilabt.imec.be:3002/?uri=http://example.org/signalgroup/1&time=2018-06-06T20:00:01"
-    },
-    {
-      @graph: [
-        {
-          "@id": "https://lodi.ilabt.imec.be:3002/?uri=http://example.org/signalgroup/1&time=2018-06-06T20:00:01",
-          "cc:license": {
-              "@id": "URI-licentie-todo"
-          }
-        },
-        {
-          "@id": "https://lodi.ilabt.imec.be:3002/?uri=http://example.org/signalgroup/1&time=2018-06-06T20:00:01",
-          "hydra:previous": {
-              "@id": "https://lodi.ilabt.imec.be:3002/?uri=http://example.org/signalgroup/1&time=2018-06-06T19:00:01"
-          }
-        },
-      ]
-    }
-  ]
-} 
+            <p>Example: GET <a href="http://lodi.ilabt.imec.be:3003/RawData/fragments?sg=1">/fragments?sg=http://example.org/signalgroup/1</a> (Accept: application/trig)</p>
+            <pre><code id="historicdata" class="javascript hljs">
+              &lt;http://example.org/signalgroup/1?time=2018-04-27T17:49:46.342Z&gt; &lt;http://www.w3.org/ns/prov#generatedAtTime&gt; &quot;2018-04-27T17:49:46.342Z&quot;. &lt;http://example.org/signalgroup/1?time=2018-04-27T17:49:46.342Z&gt; { &lt;http://example.org/eventstate/protected-Movement-Allowed&gt; a &lt;http://example.org/eventstate/&gt;; &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;protected-Movement-Allowed&quot;. &lt;http://example.org/signalgroup/1&gt; a &lt;http://example.org#signalgroup&gt;; &lt;http://example.org#eventstate&gt; &lt;http://example.org/eventstate/protected-Movement-Allowed&gt;; &lt;http://example.org#maxendtime&gt; &quot;2018-04-27T17:50:05.942Z&quot;; &lt;http://example.org#minendtime&gt; &quot;2018-04-27T17:49:50.942Z&quot; } &lt;http://example.org/signalgroup/1?time=2018-04-27T17:49:46.541Z&gt; &lt;http://www.w3.org/ns/prov#generatedAtTime&gt; &quot;2018-04-27T17:49:46.541Z&quot;. &lt;http://example.org/signalgroup/1?time=2018-04-27T17:49:46.541Z&gt; { &lt;http://example.org/eventstate/protected-Movement-Allowed&gt; a &lt;http://example.org/eventstate/&gt;; &lt;http://www.w3.org/2000/01/rdf-schema#label&gt; &quot;protected-Movement-Allowed&quot;. &lt;http://example.org/signalgroup/1&gt; a &lt;http://example.org#signalgroup&gt;; &lt;http://example.org#eventstate&gt; &lt;http://example.org/eventstate/protected-Movement-Allowed&gt;; &lt;http://example.org#maxendtime&gt; &quot;2018-04-27T17:50:05.941Z&quot;; &lt;http://example.org#minendtime&gt; &quot;2018-04-27T17:49:50.941Z&quot; } &lt;#Metadata&gt; { &lt;http://lodi.ilabt.imec.be:3003/RawData/fragments?time=2018-04-27T17:49:23.941Z&amp;sg=1&gt; &lt;http://creativecommons.org/ns#license&gt; &lt;https://creativecommons.org/publicdomain/zero/1.0/&gt; }
+
             </code></pre>
 
           <h2>Real-time data with polling</h2>
