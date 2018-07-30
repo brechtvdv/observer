@@ -78,7 +78,7 @@ class TrafficLightMarker{
           // console.log(data)
           const label = data['@graph'][0]['eventState']['rdfs:label'];
           const generatedAt = moment(data['generatedAt']);
-          const minEndTime = moment(data['@graph'][0]['minEndTime']);
+          const minEndTime = moment(data['@graph'][0]['eventState']['minEndTime']);
           const count = Math.round((minEndTime.valueOf() - generatedAt.valueOf())/1000);
 
           this.showCounterLabel(count, label);
