@@ -38,8 +38,7 @@ class TrafficLightMarker{
 
       // this.host = "https://localhost:3000";
       this.host = "https://" + data_source + ":3002";
-      this.path = "/?uri=" + this.uri;
-      this.retrieveUrl = this.host + this.path;
+      this.retrieveUrl = this.host;
 
       this.data = {};
     }
@@ -73,15 +72,17 @@ class TrafficLightMarker{
         // console.log(JSON.parse(event.data));
         let data = JSON.parse(event.data);
 
-        // Only update selected connection
-        if(data['@graph'][0]['@id'] === this.uri) {
-          // console.log(data)
-          const label = data['@graph'][0]['eventState']['rdfs:label'];
-          const generatedAt = moment(data['generatedAt']);
-          const minEndTime = moment(data['@graph'][0]['eventState']['minEndTime']);
-          const count = Math.round((minEndTime.valueOf() - generatedAt.valueOf())/1000);
+        for (var i = data.length - 1; i >= 0; i--) {
+          // Only update selected connection
+          if(data[i]['@graph'][0]['@id'] === this.uri) {
+            // console.log(data)
+            const label = data[i]['@graph'][0]['eventState']['rdfs:label'];
+            const generatedAt = moment(data[i]['generatedAt']);
+            const minEndTime = moment(data[i]['@graph'][0]['eventState']['minEndTime']);
+            const count = Math.round((minEndTime.valueOf() - generatedAt.valueOf())/1000);
 
-          this.showCounterLabel(count, label);
+            this.showCounterLabel(count, label);
+          }
         }
       };
 
