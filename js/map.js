@@ -130,7 +130,7 @@ async function getSignalGroup(_host, _path, _signalGroup) {
 }
 
 // var mapdataUrl = 'https://raw.githubusercontent.com/brechtvdv/map2lrc/master/example.ttl?token=AF5zkGVi1tjiyM9cqq4riZw9P1vHr7Zeks5bBY2WwA%3D%3Ds';
-var mapdataUrl = 'https://' + data_source;
+var mapdataUrl = 'https://' + data_source + '/map';
 
 getQuadsFromUrl(mapdataUrl).then((quads) => {
   // console.log(quads);
