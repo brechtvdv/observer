@@ -17,7 +17,7 @@ title: Open traffic lights
 email: brecht@irail.be
 description: >- # this means to ignore newlines until "baseurl:"
   Open traffic lights is a project to provide a linked open data interface for traffic lights in cities.
-baseurl: "/observer" # the subpath of your site, e.g. /blog
+baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://lodi.ilabt.imec.be" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: jekyllrb
 github_username:  jekyll
