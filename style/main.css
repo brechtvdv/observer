@@ -7,6 +7,18 @@ body {
     padding-left: 2em;
 }
 
+#vlaio-logo {
+	width: 250px;
+	height: auto;
+	float: right;
+	margin-left: 16%;
+}
+
+.test {
+	display:flex;
+    align-items:center;
+}
+
 .must {
     background:  #ff9999;
     border-radius: 5px;
@@ -184,6 +196,9 @@ h4 {
 .footer {
 	margin-top: 50px;
 	color: #777;
+
+	display:flex;
+    align-items:center;
 }
 
 
@@ -1003,6 +1018,8 @@ tr:target {
 
 	.footer {
 		margin-top: 2em;
+		display:flex;
+    	align-items:center;
 	}
 
 	.ext-links {
